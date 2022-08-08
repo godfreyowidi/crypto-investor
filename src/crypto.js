@@ -72,3 +72,56 @@ var getLatestValuePerTokenInUSD = function() {
         })
     });
 }
+
+// Function to get the portfolio value per token in USD
+var getPortfolioValuePerToken = function() {
+    console.log("cryptoLatest-->getPortfolioValuePerToken");
+    console.log("Date", args.date);
+    return new Promise(function (resolved) {
+
+        var output = [];
+
+        var btcOutputArr = [];
+        var ethOutputArr = [];
+        var ltcOutputArr = [];
+
+        var lineReader = require('readline').createInterface({
+            input: require('fs').createReadStream('transactions.csv')
+        });
+
+        lineReader.on('line', function (line) {
+
+            var jsonFromLine = {};
+            var lineArraySplit = line.split(',');
+
+            jsonFromLine.timestamp = lineArraySplit[0];
+            jsonFromLine.transaction_type = lineArraySplit[1];
+            jsonFromLine.token = lineArraySplit[2];
+            jsonFromLine.amount = lineArraySplit[3];
+
+            // converting date from timestamp
+            var date = new Date(jsonFromLine.timestamp * 1000);
+            var dateFromCsvFile = date.getDate() + "/" + (date.getMonth() + 1) + "/" + date.getFullYear();
+
+            if (jsonFromLine.token === 'ETH') {
+                if (args.date === dateFromCsvFile) {
+                    ethOutputArr.push({"token": jsonFromLine.token, "amount": jsonFromLine.amount * usdValues.ETH.USD});
+                }
+            } else if (jsonFromLine.token === 'BTC') {
+                if (args.date === dateFromCsvFile) {
+                    btcOutputArr.push({"token": jsonFromLine.token, "amount": jsonFromLine.amount * usdValues.BTC.USD});
+                }
+            } else if (jsonFromLine.token === 'LTC') {
+                if (args.date === dateFromCsvFile) {
+                    ltcOutputArr.push({"token": jsonFromLine.token, "amount": jsonFromLine.amount * usdValues.LTC.USD});
+                }
+            }
+        });
+        lineReader.on('close', function (line) {
+            output.push(btcOutputArr);
+            output.push(ethOutputArr);
+            output.push(ltcOutputArr);
+            resolved(output);
+        });
+    });
+}
