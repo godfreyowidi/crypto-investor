@@ -3,12 +3,19 @@
     "version": "1.0.0",
     "description": "Description of project",
     "scripts": {
-      "test": "jest --coverage",
-      "start": "node ./src/index.js"
+        "test": "jest --coverage",
+        "start": "node ./src/index.js"
     },
     "devDependencies": {
-      "@babel/core": "^7.6.4",
-      "@babel/plugin-transform-modules-commonjs": "^7.6.0",
-      "jest": "^24.9.0"
+        "@babel/core": "^7.6.4",
+        "@babel/plugin-transform-modules-commonjs": "^7.6.0",
+        "jest": "^24.9.0"
+    },
+    "dependencies": {
+        "await": "^0.2.6",
+        "parser": "^0.1.4",
+        "promise": "^8.1.0",
+        "request": "^2.88.2",
+        "yargs": "^17.5.1"
     }
-  }
+}
