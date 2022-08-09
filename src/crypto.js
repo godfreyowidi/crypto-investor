@@ -59,8 +59,8 @@ var getLatestValuePerTokenInUSD = function() {
             cryptoCompare.then(function (result) {
                 usdValues = result; // Save the result in a variable
                 ethOutputArr.amount = ethOutputArr.amount * usdValues.ETH.USD;
-                btcOutputArr.amount = btcOutputArr.amount * usdValues.BTC.USD;
-                ltcOutputArr.amount = ltcOutputArr.amount * usdValues.LTC.USD;
+                btcOutputArr.amount = btcOutputArr.amount * usdValues.ETH.USD;
+                ltcOutputArr.amount = ltcOutputArr.amount * usdValues.ETH.USD;
 
                 output.push(btcOutputArr);
                 output.push(ethOutputArr);
@@ -109,11 +109,11 @@ var getPortfolioValuePerToken = function() {
                 }
             } else if (jsonFromLine.token === 'BTC') {
                 if (args.date === dateFromCsvFile) {
-                    btcOutputArr.push({"token": jsonFromLine.token, "amount": jsonFromLine.amount * usdValues.BTC.USD});
+                    btcOutputArr.push({"token": jsonFromLine.token, "amount": jsonFromLine.amount * usdValues.ETH.USD});
                 }
             } else if (jsonFromLine.token === 'LTC') {
                 if (args.date === dateFromCsvFile) {
-                    ltcOutputArr.push({"token": jsonFromLine.token, "amount": jsonFromLine.amount * usdValues.LTC.USD});
+                    ltcOutputArr.push({"token": jsonFromLine.token, "amount": jsonFromLine.amount * usdValues.ETH.USD});
                 }
             }
         });
