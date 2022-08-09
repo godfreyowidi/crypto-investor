@@ -151,23 +151,62 @@ function getUSDValues() {
 
 }
 
-// function filterByProperty(array, prop, value){
-//     var filtered = [];
-//     for(var i = 0; i < array.length; i++){
+function filterByProperty(array, prop, value){
+    var filtered = [];
+    for(var i = 0; i < array.length; i++){
 
-//         var obj = array[i];
+        var obj = array[i];
 
-//         for(var key in obj){
-//             if(typeof(obj[key] == "object")){
-//                 var item = obj[key];
-//                 if(item[prop] == value){
-//                     filtered.push(item);
-//                 }
-//             }
-//         }
+        for(var key in obj){
+            if(typeof(obj[key] == "object")){
+                var item = obj[key];
+                if(item[prop] == value){
+                    filtered.push(item);
+                }
+            }
+        }
 
-//     }    
+    }    
+    return filtered;
 
-//     return filtered;
+}
 
-// }
+// Based on the type of the parameters we pass as cmd, corresponding function will be called
+if(args.token === undefined && args.date === undefined){
+    console.log("Given no parameters, return the latest portfolio value per token in USD");
+    getLatestValuePerTokenInUSD().then(function (result) { console.log(result); });
+}
+else if (args.token != undefined && args.date === undefined){
+    console.log("Given a token, return the latest portfolio value for that token in USD");
+    getLatestValuePerTokenInUSD().then(function (result) { 
+        var resultPerToken =  result.filter(function(record) {
+            return record.token === args.token;
+            })
+            console.log(resultPerToken);
+     });
+}
+else if (args.date != undefined && args.token === undefined){
+    console.log("Given a date, return the portfolio value per token in USD on that date");
+    cryptoCompare = getUSDValues();
+    cryptoCompare.then(function (result) {
+     usdValues = result;
+     getPortfolioValuePerToken().then(function (result) { console.log(result); });
+ }, function (err) {
+     console.log(err);
+ })
+    
+}
+else if (args.token != undefined && args.date != undefined){
+    console.log("Given a date and a token, return the portfolio value of that token in USD on that date");
+    cryptoCompare = getUSDValues();
+    cryptoCompare.then(function (usdVal) {
+    usdValues = usdVal;
+    getPortfolioValuePerToken().then(function (result) { 
+         
+        var resultPerToken =  filterByProperty(result,"token",args.token);
+            console.log(resultPerToken); 
+        });
+ }, function (err) {
+     console.log(err);
+ })
+}

@@ -3,8 +3,7 @@
     "version": "1.0.0",
     "description": "Description of project",
     "scripts": {
-        "test": "jest --coverage",
-        "start": "node ./src/crypto.js"
+        "test": "jest --coverage"
     },
     "devDependencies": {
         "@babel/core": "^7.6.4",
@@ -13,6 +12,7 @@
     },
     "dependencies": {
         "await": "^0.2.6",
+        "date-and-time": "^2.4.1",
         "parser": "^0.1.4",
         "promise": "^8.1.0",
         "request": "^2.88.2",
